@@ -162,10 +162,12 @@ class ControllerPage extends React.Component {
 	}
 	handleScan = data => {
 		if (data) {
-		  this.setState({
-			code: data
-		  })
-		  this.initThree()
+			this.props.history.push('/control/' + data)
+			window.location.reload()
+		 //  this.setState({
+			// code: data
+		 //  })
+		 //  this.initThree()
 		}
 	}
 	handleError = err => {
