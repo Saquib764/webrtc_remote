@@ -1,0 +1,42 @@
+.nav-item {
+  .nav-link {
+    display: flex;
+    align-items: center;
+
+    &.active {
+      color: #fff;
+      background: rgba(255, 255, 255, .23);
+      opacity: 1;
+    }
+  }
+}
+
+.sidebar .nav a {
+  transition: all 150ms ease-in;
+}
+
+.card-header {
+  text-transform: uppercase;
+}
+
+
+.DateRangePicker{
+  float: right;
+}
+
+.LoadPage{
+  z-index: 10;
+}
+.btn{
+  border-radius: 0;
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+.control{
+  display: none;
+}
+.previewRow:hover .control{
+  display: block;
+}
