@@ -36,6 +36,7 @@ class ControllerPage extends React.Component {
 			this.state.code = p.code
 		}
 		window.addEventListener('deviceorientation', this.handleOrientation.bind(this));
+		// window.addEventListener('devicemotion', this.handleOrientation.bind(this));
 
 
 		var cfg = {'iceServers': [{'url': 'stun:23.21.150.121'}]},
@@ -84,22 +85,32 @@ class ControllerPage extends React.Component {
 		.catch(e=> {console.log("erroe accepting offer")});
 	}
 	smooth(degree){
+		return degree
 		return (degree + 360)%360
 	}
 	handleOrientation(e){
 		let {code} = this.state
 		if(!code)
 			return
+
 		let pitch = this.smooth(e.beta);
 		let roll = this.smooth(e.gamma)
 		let yaw = this.smooth(e.alpha)
+		
+		if(Math.abs(pitch) > 90){
+			pitch = 180-pitch
+			roll = roll - 180
+			yaw = yaw - 180
+		}
 
 		this.cube.rotation.x = pitch*Math.PI/180.0
 		this.cube.rotation.y = roll*Math.PI/180.0
 		this.cube.rotation.z = yaw*Math.PI/180.0
 		// Send message
-		if(this.messenger)
+		if(this.messenger){
 			this.messenger.send(JSON.stringify({pitch, roll, yaw}))
+			this.setState({data: JSON.stringify({pitch, roll, yaw})})
+		}
 	}
 	
 
@@ -127,6 +138,7 @@ class ControllerPage extends React.Component {
 		const material = new THREE.MeshLambertMaterial({ color: '#433F81'     })
 		this.cube = new THREE.Mesh(geometry, material)
 		this.scene.add(this.cube)
+
 
 		// Add light
 		var alight = new THREE.AmbientLight( 0xffffff ); // soft white light
@@ -174,7 +186,10 @@ class ControllerPage extends React.Component {
 		console.error(err)
 	}
 	render() {
-		let {loading, code} = this.state;
+		let {loading, code, data} = this.state;
+		let d = null;
+		if(data)
+			d = <span>{data}</span>
 		if(loading){
 			return (
 				<Page className="LoadPage">
@@ -193,7 +208,7 @@ class ControllerPage extends React.Component {
 					  onScan={this.handleScan}
 					  style={{ width: '100%' }}
 					/>
-			
+				
 				</Page>
 			)
 		}
@@ -202,6 +217,7 @@ class ControllerPage extends React.Component {
 			<Page className="ControllerPage" style={{width: "100%", zIndex: 10, marginTop: "100px"}}>
 				<p>{this.state.code}</p>
 				<div id="mount" style={{ width: '100%', height: '400px' }} ref={(mount) => { this.mount = mount }}/>
+				{d}
 			</Page>
 		)
 	}

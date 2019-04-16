@@ -27,7 +27,7 @@ class Header extends React.Component {
 			
 			<Navbar light expand style={{backgroundColor: "black", color: "white", height: "70px"}}>
 				<Nav navbar>
-					<a href="http://saquibalam.com" style={{fontSize: "1.4em", textDecoration: "none", color: "white"}}><b>Created by Saquib</b></a>
+					<a href="http://saquibalam.com" style={{fontSize: "1.4em", textDecoration: "none", color: "white"}}><b>Saquib</b></a>
 						
 				</Nav>
 
